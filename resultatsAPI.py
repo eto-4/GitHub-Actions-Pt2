@@ -1,6 +1,7 @@
 import openmeteo_requests
-
+from datetime import datetime
 import pandas as pd
+import json
 import requests_cache
 from retry_requests import retry
 
@@ -89,4 +90,31 @@ if dades_calculades is not None:
 
 else:
     print(f"No hi ha dades disponibles a dades_calculades")
-    
+
+hourly_dataframe["date"] = hourly_dataframe["date"].astype(str)
+
+datos_json = {
+    "location": {
+        "latitude": "41.75°N",
+        "longitude": "1.8125°E",
+        "elevation_m": 241,
+        "timezone": "Europe/Madrid",
+        "offset_seconds": 7200
+    },
+    "temperatura_datos":  [
+        {
+            "date": str(row["date"]),
+            "temperature_2m": float(row["temperature_2m"])
+        } for _, row in hourly_dataframe.iterrows()
+    ],
+    "resumen": {
+        "max": str(dades_calculades[0]),
+        "min": str(dades_calculades[1]),
+        "promedio": str(dades_calculades[2])
+    }
+}
+
+date = datetime.strptime("20250516" ,"%Y%m%d").date()
+
+with open(f"GitHub-Actions-Pt2\\dades_json\\temperatura_{date}.json", "w", encoding="utf-8") as f:
+    json.dump(datos_json, f, indent=4, ensure_ascii=False)
