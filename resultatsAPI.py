@@ -114,7 +114,8 @@ datos_json = {
     }
 }
 
-date = datetime.strptime("20250516" ,"%Y%m%d").date()
+date = datetime.strptime("20250516", "%Y%m%d")
+date_str = date.strftime("%Y%m%d")
 
-with open(f"dades_json/temperatura_{date}.json", "w", encoding="utf-8") as f:
+with open(f"dades_json/temperatura_{date_str}.json", "w", encoding="utf-8") as f:
     json.dump(datos_json, f, indent=4, ensure_ascii=False)
