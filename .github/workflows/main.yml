@@ -7,7 +7,7 @@ on:
   # Triggers the workflow on push or pull request events but only for the "main" branch
   schedule:
   # He posat cada dos minuts per fer les proves
-    - cron: '*/2 * * * *' # Amb '59 23 * * *' podem fer que  s'executi cada dia a les 23:59 UTC
+    - cron: '10 * * * *' # Amb '59 23 * * *' podem fer que  s'executi cada dia a les 23:59 UTC
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
 
