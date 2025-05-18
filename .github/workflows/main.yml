@@ -1,15 +1,13 @@
 # This is a basic workflow to help you get started with Actions
 
-name: Actions-Pytest-Pt2
+name: Execució meteo python file
 
 # Controls when the workflow will run
 on:
   # Triggers the workflow on push or pull request events but only for the "main" branch
-  push:
-    branches: [ "main" ]
-  pull_request:
-    branches: [ "main" ]
-
+  schedule:
+  # He posat cada dos minuts per fer les proves
+    - cron: '*/2 * * * *' # Amb '59 23 * * *' podem fer que  s'executi cada dia a les 23:59 UTC
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
 
@@ -23,7 +21,8 @@ jobs:
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
-      - uses: actions/checkout@v4
+      - name: Clonar el repositori
+        uses: actions/checkout@v4
 
       # Runs a single command using the runners shell
       - name: Configurar Python
@@ -37,3 +36,14 @@ jobs:
           pip install pytest
           pip install openmeteo-requests
           pip install requests-cache retry-requests numpy pandas
+
+      - name: Executar el script
+        run: resultatsAPI.py
+
+      - name: Fer commit del .json generat
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add '*.json'
+          git commit -m "Afegit arxius JSON generats automàticament" || echo "No hi ha canvis per commitejar"
+          git push
