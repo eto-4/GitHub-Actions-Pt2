@@ -38,7 +38,7 @@ jobs:
           pip install requests-cache retry-requests numpy pandas
 
       - name: Executar el script
-        run: resultatsAPI.py
+        run: python resultatsAPI.py
 
       - name: Fer commit del .json generat
         run: |
